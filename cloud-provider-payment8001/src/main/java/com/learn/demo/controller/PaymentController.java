@@ -4,16 +4,21 @@ import com.learn.demo.entities.CommonResult;
 import com.learn.demo.entities.Payment;
 import com.learn.demo.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @Slf4j
 public class PaymentController {
-    @Resource
+    @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Value("${server.port}")
     private String serverPort;
@@ -39,5 +44,18 @@ public class PaymentController {
             return new CommonResult(1, "添加失败");
         }
 
+    }
+
+    @GetMapping("/payment/discovery")
+    public Object discovery(){
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            log.info(String.format("===============service:[%s]====================", service));
+        }
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-server");
+        for (ServiceInstance instance : instances) {
+            log.info(instance.getServiceId()+"\t"+instance.getHost()+"\t"+instance.getPort()+"\t"+instance.getUri());
+        }
+        return this.discoveryClient;
     }
 }
