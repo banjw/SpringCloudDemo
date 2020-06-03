@@ -72,4 +72,18 @@ public class PaymentController {
         }
         return new CommonResult(0, "请求成功，端口号为："+serverPort);
     }
+
+    @GetMapping("/payment/hystrix/ok/{id}")
+    public CommonResult paymentOK(@PathVariable("id") Integer id){
+        String result = paymentService.paymentOK(id);
+        log.info(result);
+        return new CommonResult(0,result);
+    }
+
+    @GetMapping("/payment/hystrix/timeout/{id}")
+    public CommonResult paymentTimeOut(@PathVariable("id") Integer id){
+        String result = paymentService.paymentTimeOut(id);
+        log.info(result);
+        return new CommonResult(0,result);
+    }
 }
