@@ -3,6 +3,7 @@ package com.learn.demo.service.impl;
 import com.learn.demo.dao.PaymentDao;
 import com.learn.demo.entities.Payment;
 import com.learn.demo.service.PaymentService;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
+@DefaultProperties(defaultFallback = "paymentGloblaFallbackHandler")
 public class PaymentServiceImpl implements PaymentService {
 
     @Resource
@@ -26,7 +28,10 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @HystrixCommand//只加了注解，没有指定的，使用全局fallback方法
     public String paymentOK(Integer id) {
+        //人为制造异常或
+//        int a =  10/0;
         return "线程池:\t"+Thread.currentThread().getName()+"paymentOK:\t"+id+"==================================";
     }
 
@@ -49,5 +54,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public String paymentTimeOutHandler(Integer id) {
         return "线程池:  "+Thread.currentThread().getName()+"paymentTimeOutHandler:  "+id+"==================================";
+    }
+
+    public String paymentGloblaFallbackHandler(){
+        return "线程池:  "+Thread.currentThread().getName()+"全局降级处理";
     }
 }
