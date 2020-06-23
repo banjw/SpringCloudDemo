@@ -9,6 +9,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 @Service
 @DefaultProperties(defaultFallback = "paymentGloblaFallbackHandler")
@@ -32,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
     public String paymentOK(Integer id) {
         //人为制造异常或
 //        int a =  10/0;
-        return "线程池:\t"+Thread.currentThread().getName()+"paymentOK:\t"+id+"==================================";
+        return "线程名:\t"+Thread.currentThread().getName()+"paymentOK:\t"+id+"==================================";
     }
 
     @Override
@@ -48,15 +49,37 @@ public class PaymentServiceImpl implements PaymentService {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "线程池:\t"+Thread.currentThread().getName()+"paymentTimeOut:\t"+id+"==================================耗时（ms）"+(System.currentTimeMillis() - startTime);
+        return "线程名:\t"+Thread.currentThread().getName()+"paymentTimeOut:\t"+id+"==================================耗时（ms）"+(System.currentTimeMillis() - startTime);
     }
 
     @Override
     public String paymentTimeOutHandler(Integer id) {
-        return "线程池:  "+Thread.currentThread().getName()+"paymentTimeOutHandler:  "+id+"==================================";
+        return "线程名:  "+Thread.currentThread().getName()+"paymentTimeOutHandler:  "+id+"==================================";
     }
 
     public String paymentGloblaFallbackHandler(){
-        return "线程池:  "+Thread.currentThread().getName()+"全局降级处理";
+        return "线程名:  "+Thread.currentThread().getName()+"全局降级处理";
     }
+
+    @Override
+    @HystrixCommand(fallbackMethod = "paymentCircuitBreakerFallback",
+            commandProperties = {//参数需要参考com.netflix.hystrix.HystrixCommandProperties类中的默认配置
+            @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),//是否开启断路器
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),//请求次数
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"),//时间窗口期
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60")//失败率多少后跳闸
+            }
+    )
+    public String paymentCircuitBreaker(Integer id) {
+        if(id < 0){
+            throw new RuntimeException("id不能为负数");
+        }
+        return "线程名:  "+Thread.currentThread().getName()+"paymentTimeOutHandler: "+id+"=================================="+UUID.randomUUID();
+    }
+
+    @Override
+    public String paymentCircuitBreakerFallback(Integer id) {
+        return  "线程名:  "+Thread.currentThread().getName()+ String.format(" id[%d]不能为负数，请稍后再试", id);
+    }
+
 }
