@@ -19,6 +19,7 @@
     <module>cloud-consumer-feign-order80</module>
     <module>cloud-provider-es-search9001</module>
     <module>cloud-provider-activemq9101</module>
+      <module>cloud-consumer-hystrix-dashboard9010</module>
   </modules>
 
 
