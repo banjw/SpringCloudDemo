@@ -1,5 +1,5 @@
 server:
-  port: 3355
+  port: 3366
 
 spring:
   application:
@@ -17,7 +17,6 @@ spring:
     port: 5672
     username: guest
     password: guest
-
 eureka:
   client:
       #表示是否将自己注册进EurekaServer默认为true。
@@ -30,7 +29,7 @@ eureka:
         #集群版
 #        defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
   instance:
-    instance-id: config-client3355
+    instance-id: config-client3366
     prefer-ip-address: true
 
 # 暴露监控端点
