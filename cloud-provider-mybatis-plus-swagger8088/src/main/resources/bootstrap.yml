@@ -1,0 +1,5 @@
+spring:
+  cloud:
+  #Config客户端配置
+    config:
+      uri: http://localhost:3344/ #配置中心地址
