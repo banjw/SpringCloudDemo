@@ -28,6 +28,7 @@
     <module>cloud-stream-rabbitmq-consumer8802</module>
     <module>cloud-stream-rabbitmq-consumer8803</module>
     <module>cloud-provider-mybatis-plus-swagger8088</module>
+    <module>cloud-redis-sentinel5566</module>
   </modules>
 
 

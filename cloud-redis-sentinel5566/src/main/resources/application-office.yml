@@ -1,13 +1,12 @@
+server:
+  port: 5566
 spring:
   redis:
     sentinel:
       master: mymaster
+      nodes: 192.168.100.104:26379
     jedis:
       pool:
-#        max-active: 1024
-#        max-wait: 20000
-#        max-idle: 200
-#        min-idle: 10
         #最大连接数
         max-active: 1024
         #最大阻塞等待时间(负数表示没限制)
@@ -16,13 +15,3 @@ spring:
         max-idle: 200
         #最小空闲
         min-idle: 10
-myredis:
- sentinel:
-  host: 192.168.30.84
-  port: 26379
-
-#spring:
-#  redis:
-#    host: 192.168.30.81
-#    port: 6379
-#    database: 0

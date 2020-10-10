@@ -15,16 +15,20 @@ import org.springframework.data.redis.core.RedisTemplate;
 @SpringBootTest
 @Slf4j
 public class RedisSentinelTest5566 {
-    @Qualifier("getRedisTemplate")
+
     @Autowired
-    private  RedisTemplate<String, String> redisTemplate;
+    @Qualifier("redisTemplate0")
+    private  RedisTemplate<String, Object> redisTemplate0;
+    @Autowired
+    @Qualifier("redisTemplate15")
+    private  RedisTemplate<String, Object> redisTemplate15;
 
     @Test
     public void getString(){
-        String v1 = redisTemplate.opsForValue().get("k1");
+        Object v1 = redisTemplate0.opsForValue().get("k1");
         log.info("k1={}", v1);
-//        redisTemplate.opsForValue().set("test", "test");
-//        Object test = redisTemplate.opsForValue().get("test");
-//        log.info("test={}", test);
+        Object test15 = redisTemplate15.opsForValue().get("test15");
+        log.info("test15={}", test15);
     }
+
 }
