@@ -7,15 +7,16 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
+ * 用户实体类
  * @author banjiawei
- * @description
  * @date 2020/10/09
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TestEntity implements Serializable {
+public class UserEntity implements Serializable {
     private static final long serialVersionUID = -6839398848498112315L;
+    private int id;
     private String userName;
     private int age;
 }
