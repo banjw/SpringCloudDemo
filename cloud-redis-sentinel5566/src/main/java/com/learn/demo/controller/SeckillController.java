@@ -19,7 +19,7 @@ public class SeckillController {
     private SeckillService seckillService;
 
     @GetMapping("/flash/sale")
-    public void flashSale(){
-        seckillService.flashSale();
+    public String flashSale(){
+        return seckillService.flashSale();
     }
 }

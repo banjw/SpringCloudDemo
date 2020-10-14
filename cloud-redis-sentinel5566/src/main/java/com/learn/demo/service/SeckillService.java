@@ -13,7 +13,7 @@ public interface SeckillService {
      * @param
      * @return void
      */
-    void flashSale();
+    String flashSale();
 
     /**
      * 初始化库存
