@@ -14,7 +14,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,26 +25,29 @@ import java.util.Set;
 @Slf4j
 public class RedisSentinelConfig {
 
-    @Value("#{'${spring.redis.sentinel.nodes}'.split(',')}")
-    private List<String> nodes;
+    @Value("${spring.redis.maxWaitMillis}")
+    private int maxWaitMillis;
+    @Value("${spring.redis.maxTotal}")
+    private int maxTotal;
+    @Value("${spring.redis.testOnBorrow}")
+    private boolean testOnBorrow;
+    @Value("${spring.redis.testOnReturn}")
+    private boolean testOnReturn;
+    @Value("${spring.redis.maxIdle}")
+    private int maxIdle;
     @Value("${spring.redis.sentinel.master}")
     private String myMasterName;
-    @Value("${spring.redis.jedis.pool.max-active}")
-    private int maxActive;
-    @Value("${spring.redis.jedis.pool.max-wait}")
-    private long maxWait;
-    @Value("${spring.redis.jedis.pool.max-idle}")
-    private int maxIdle;
-    @Value("${spring.redis.jedis.pool.min-idle}")
-    private int minIdle;
+    @Value("#{'${spring.redis.sentinel.nodes}'.split(',')}")
+    private Set<String> nodes;
 
     @Bean
     public JedisPoolConfig jedisPoolConfig(){
         JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(maxActive);
-        config.setMaxWaitMillis(maxWait);
         config.setMaxIdle(maxIdle);
-        config.setMinIdle(minIdle);
+        config.setMaxTotal(maxTotal);
+        config.setMaxWaitMillis(maxWaitMillis);
+        config.setTestOnBorrow(testOnBorrow);
+        config.setTestOnReturn(testOnReturn);
         return config;
     }
 
@@ -65,6 +67,8 @@ public class RedisSentinelConfig {
         //配置redis的哨兵sentinel
         redisSentinelConfiguration.setSentinels(sentinelNodes());
         redisSentinelConfiguration.setDatabase(0);
+        //设置密码，如果有的话
+        //redisSentinelConfiguration.setPassword("");
         return redisSentinelConfiguration;
     }
 
@@ -83,6 +87,8 @@ public class RedisSentinelConfig {
         //配置redis的哨兵sentinel
         redisSentinelConfiguration.setSentinels(sentinelNodes());
         redisSentinelConfiguration.setDatabase(15);
+        //设置密码，如果有的话
+        //redisSentinelConfiguration.setPassword("");
         return redisSentinelConfiguration;
     }
 

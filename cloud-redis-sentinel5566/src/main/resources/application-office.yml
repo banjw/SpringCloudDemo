@@ -4,17 +4,13 @@ spring:
   redis:
     sentinel:
       master: mymaster
-      nodes: 192.168.100.104:26379
-    jedis:
-      pool:
-        #最大连接数
-        max-active: 1024
-        #最大阻塞等待时间(负数表示没限制)
-        max-wait: 20000
-        #最大空闲
-        max-idle: 200
-        #最小空闲
-        min-idle: 10
+      nodes: 192.168.100.104:26379,192.168.100.105:26379,192.168.100.106:26379
+    maxIdle: 15
+    maxWaitMillis: 2000
+    maxTotal: 50
+    testOnBorrow: true
+    testOnReturn: true
+    timeout: 5000
   application:
     name: redis-sentinel
 eureka:
