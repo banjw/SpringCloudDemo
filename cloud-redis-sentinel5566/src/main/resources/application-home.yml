@@ -4,7 +4,7 @@ spring:
   redis:
     sentinel:
       master: mymaster
-      nodes: 192.168.30.84:26379
+      nodes: 192.168.30.84:26379,192.168.30.85:26379,192.168.30.86:26379
     maxIdle: 15
     maxWaitMillis: 2000
     maxTotal: 50
