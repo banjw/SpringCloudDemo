@@ -30,6 +30,7 @@
     <module>cloud-provider-mybatis-plus-swagger8088</module>
     <module>cloud-redis-sentinel5566</module>
     <module>cloud-redis-cluster6677</module>
+    <module>cloud-validate-global-advice4001</module>
   </modules>
 
 
