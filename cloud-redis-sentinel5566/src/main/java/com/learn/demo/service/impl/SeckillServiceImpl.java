@@ -32,9 +32,9 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public String flashSale() {
-        int userId = ThreadLocalRandom.current().nextInt(1000, 9999);
-        RLock lock = redissonClient3.getLock(STORAGE_KEY + userId);
+        RLock lock = redissonClient3.getLock(STORAGE_KEY);
         try{
+            int userId = ThreadLocalRandom.current().nextInt(1000, 9999);
             lock.lock(3, TimeUnit.SECONDS);
             UserEntity user = new UserEntity();
             user.setId(userId);

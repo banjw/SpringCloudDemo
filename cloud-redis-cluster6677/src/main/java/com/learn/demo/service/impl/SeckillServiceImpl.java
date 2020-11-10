@@ -26,13 +26,14 @@ public class SeckillServiceImpl implements SeckillService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
-    private RedissonClient redissonClient3;
+    private RedissonClient redissonClient;
 
     @Override
     public String flashSale() {
-        int userId = ThreadLocalRandom.current().nextInt(1000, 9999);
-        RLock lock = redissonClient3.getLock(STORAGE_KEY + userId);
+        String productId = "唯一的抢购产品ID或者分段抢购ID";
+        RLock lock = redissonClient.getLock(productId);
         try{
+            int userId = ThreadLocalRandom.current().nextInt(1000, 9999);
             lock.lock(3, TimeUnit.SECONDS);
             UserEntity user = new UserEntity();
             user.setId(userId);
